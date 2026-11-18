@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你该换工作，还是换活法？</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background: #ffffff;
+            color: #222222;
+            line-height: 1.7;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+        .home-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 40px 0 20px;
+            line-height: 1.3;
+        }
+        .home-tip {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+        .illustration {
+            width: 100%;
+            margin: 30px 0;
+        }
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #222;
+            background: #fff;
+            font-size: 17px;
+            border-radius: 12px;
+            margin-top: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            background: #222;
+            color: #fff;
+        }
+        .question-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 30px 0 24px;
+        }
+        .option-item {
+            border: 1px solid #ddd;
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+        .option-item:hover {
+            border-color: #222;
+        }
+        .report-box {
+            border: 1px solid #eee;
+            padding: 24px;
+            border-radius: 14px;
+            margin-top: 20px;
+        }
+        .report-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        .report-section {
+            margin: 16px 0;
+        }
+        .report-section h4 {
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        .tip-text {
+            font-size: 14px;
+            color: #777;
+            margin-top: 24px;
+        }
+        .progress {
+            text-align: right;
+            color: #777;
+            margin-bottom:10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 首页 -->
+    <div id="page-home" class="page active">
+        <p style="font-size:17px;">遵从内心去选择，不要犹豫～</p>
+        <h1 class="home-title">你该换工作，<br>还是换活法？</h1>
+        <div class="illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+                <rect x="20" y="60" width="160" height="240" fill="none" stroke="#222" stroke-width="3"/>
+                <line x1="100" y1="60" x2="100" y2="300" stroke="#222" stroke-width="2"/>
+                <rect x="170" y="170" width="22" height="36" fill="none" stroke="#222" stroke-width="2"/>
+                <line x1="181" y1="176" x2="181" y2="194" stroke="#222" stroke-width="2"/>
+                <rect x="220" y="60" width="160" height="240" fill="none" stroke="#222" stroke-width="3"/>
+                <line x1="300" y1="60" x2="300" y2="300" stroke="#222" stroke-width="2"/>
+                <rect x="380" y="170" width="22" height="36" fill="none" stroke="#222" stroke-width="2"/>
+                <line x1="391" y1="176" x2="391" y2="194" stroke="#222" stroke-width="2"/>
+                <path d="M70 140 C70 128,86 128,86 140 L86 220 L64 220 Z" fill="#222"/>
+                <circle cx="78" cy="130" r="12" fill="#222"/>
+                <rect x="88" y="170" width="18" height="28" fill="#fff" stroke="#222"/>
+                <path d="M270 140 C270 128,286 128,286 140 L286 220 L264 220 Z" fill="#222"/>
+                <circle cx="278" cy="130" r="12" fill="#222"/>
+                <rect x="290" y="170" width="18" height="28" fill="#fff" stroke="#222"/>
+                <text x="272" y="90" font-size="14">Company</text>
+                <g fill="#222" font-size="10">
+                    <text x="235" y="150">工作</text><text x="245" y="168">工作</text><text x="252" y="185">工作</text>
+                    <text x="233" y="205">工作</text><text x="242" y="222">工作</text><text x="250" y="240">工作</text>
+                    <text x="260" y="255">工作</text><text x="275" y="268">工作</text><text x="290" y="258">工作</text>
+                    <text x="305" y="242">工作</text><text x="310" y="220">工作</text><text x="308" y="198">工作</text>
+                    <text x="302" y="175">工作</text><text x="294" y="155">工作</text>
+                </g>
+            </svg>
+        </div>
+        <p class="home-tip">一共10题，1-2分钟完成，帮你看清内耗根源</p>
+        <button class="btn" onclick="startTest()">开始测试</button>
+    </div>
+
+    <!-- 答题页面 -->
+    <div id="page-question" class="page">
+        <div class="progress"><span id="q-index">1</span>/10</div>
+        <div id="q-wrap"></div>
+    </div>
+
+    <!-- 报告结果页 -->
+    <div id="page-report" class="page">
+        <div class="report-box">
+            <h2 id="r-title" class="report-title"></h2>
+            <div id="r-content"></div>
+        </div>
+        <button class="btn" onclick="restartTest()">重新测一次</button>
+        <p class="tip-text">⚠️本测试为趣味自我觉察参考，不构成专业心理/离职决策建议</p>
+    </div>
+</div>
+
+<script>
+// 维度顺序：工作、成长、能量、生活
+const questions = [
+    {
+        title:"周一想到上班，你的感受？",
+        options:[
+            {txt:"有点期待，有想推进的事",score:[2,2,2,2]},
+            {txt:"勉强扛住，熬到周五就行",score:[1,0,-1,0]},
+            {txt:"一想到就烦躁胸闷，只想逃",score:[-2,-1,-3,-2]},
+            {txt:"麻木无感，机械完成任务",score:[-1,-2,-2,-1]}
+        ]
+    },
+    {
+        title:"在这份工作里，还能学到新东西吗？",
+        options:[
+            {txt:"经常有新收获，持续成长",score:[2,3,2,1]},
+            {txt:"偶尔有，大部分时间重复",score:[1,1,0,0]},
+            {txt:"很久没有长进，原地打转",score:[0,-2,-1,-1]},
+            {txt:"完全消耗，只会越来越疲惫",score:[-1,-3,-3,-2]}
+        ]
+    },
+    {
+        title:"下班之后，你的精力状态？",
+        options:[
+            {txt:"还有余力，可以安排自己的生活",score:[1,1,3,3]},
+            {txt:"有点累，休息一会就能恢复",score:[1,0,1,1]},
+            {txt:"很累，什么都不想干",score:[0,-1,-2,-1]},
+            {txt:"精疲力竭，情绪很难平复",score:[-2,-2,-3,-3]}
+        ]
+    },
+    {
+        title:"工作会不会持续侵占你的私人时间？",
+        options:[
+            {txt:"边界清晰，下班就是自己的时间",score:[2,1,2,3]},
+            {txt:"偶尔加班，可控范围",score:[1,1,0,1]},
+            {txt:"经常临时消息，很难脱身",score:[-1,0,-2,-2]},
+            {txt:"24小时待命，生活被挤压",score:[-2,-1,-3,-3]}
+        ]
+    },
+    {
+        title:"你对当前团队、领导氛围感受？",
+        options:[
+            {txt:"氛围舒服，沟通顺畅",score:[3,1,2,1]},
+            {txt:"普通，没特别好也没糟心",score:[1,0,0,0]},
+            {txt:"经常内耗、被打压、背锅",score:[-2,-1,-2,-1]},
+            {txt:"环境压抑，每天都很煎熬",score:[-3,-2,-3,-2]}
+        ]
+    },
+    {
+        title:"你还有想追求的目标吗？",
+        options:[
+            {txt:"有清晰目标，当前工作是跳板",score:[2,3,2,2]},
+            {txt:"有想法，但暂时不知道怎么做",score:[1,1,0,1]},
+            {txt:"没什么动力，觉得做什么都差不多",score:[-1,-2,-1,-1]},
+            {txt:"已经失去期待，只想逃避",score:[-2,-3,-2,-2]}
+        ]
+    },
+    {
+        title:"薪资回报和你的付出匹配吗？",
+        options:[
+            {txt:"匹配，付出有对应的回报",score:[2,1,2,1]},
+            {txt:"一般，不算高也不算离谱",score:[1,0,0,0]},
+            {txt:"偏低，付出多回报少",score:[-1,0,-1,-1]},
+            {txt:"严重不匹配，纯粹消耗",score:[-2,-1,-2,-2]}
+        ]
+    },
+    {
+        title:"你有属于自己的爱好、放松方式吗？",
+        options:[
+            {txt:"一直保留，用来给自己充电",score:[1,1,2,3]},
+            {txt:"偶尔有空会做一做",score:[1,0,1,1]},
+            {txt:"很久没有时间做喜欢的事",score:[0,-1,-1,-2]},
+            {txt:"完全丢掉，没有精力",score:[-1,-2,-2,-3]}
+        ]
+    },
+    {
+        title:"想到未来一年继续做这份工作，感受？",
+        options:[
+            {txt:"期待，愿意长期深耕",score:[3,2,2,1]},
+            {txt:"可以接受，走一步看一步",score:[1,1,0,0]},
+            {txt:"有点焦虑，不太想继续",score:[-1,0,-2,-1]},
+            {txt:"一想到就窒息，想逃离",score:[-3,-2,-3,-2]}
+        ]
+    },
+    {
+        title:"你觉得痛苦根源更偏向哪一类？",
+        options:[
+            {txt:"岗位/公司本身有硬伤",score:[-3,0,-1,0]},
+            {txt:"自己节奏、边界、心态问题",score:[0,-1,-1,-3]},
+            {txt:"短期压力，阶段性低谷",score:[0,0,-2,0]},
+            {txt:"说不清，方方面面都难受",score:[-2,-2,-2,-2]}
+        ]
+    }
+];
+
+const reports = [
+    {
+        tag:"适合换工作｜环境硬伤型",
+        title:"你的核心结论：优先换工作",
+        content:`
+<div class="report-section"><h4>📌人生状态总览</h4>
+<p>你的疲惫主要来自外部环境，不是你不会调节生活。公司、岗位、团队存在难以靠个人调整修复的硬伤。</p></div>
+<div class="report-section"><h4>📌工作匹配度分析</h4>
+<p>当前岗位和你的需求严重错位，继续耗下去只会持续消耗你的能量。</p></div>
+<div class="report-section"><h4>📌能量透支评估</h4>
+<p>能量持续被外部因素抽取，靠自我调节很难恢复。</p></div>
+<div class="report-section"><h4>📌成长停滞诊断</h4>
+<p>这个环境很难给到你想要的成长上限。</p></div>
+<div class="report-section"><h4>📌活法失衡指数</h4>
+<p>失衡是结果，根源是环境。</p></div>
+<div class="report-section"><h4>📌问题来源分析</h4>
+<p>不是你不会生活，是这个环境不适合你。</p></div>
+<div class="report-section"><h4>📌未来6个月推演</h4>
+<p>留在原地，内耗会持续加重；找到适配的新环境，状态会明显回升。</p></div>
+<div class="report-section"><h4>📌未来30天调整路线图</h4>
+<p>悄悄更新简历、梳理作品集、看机会，骑驴找马，优先筛选氛围和成长空间。</p></div>
+        `
+    },
+    {
+        tag:"适合换活法｜内在失衡型",
+        title:"你的核心结论：优先调整活法",
+        content:`
+<div class="report-section"><h4>📌人生状态总览</h4>
+<p>工作本身没有致命问题，是你的边界、节奏、生活秩序乱了。</p></div>
+<div class="report-section"><h4>📌工作匹配度分析</h4>
+<p>岗位本身尚可，换掉它，大概率下一份你依然会遇到同样内耗。</p></div>
+<div class="report-section"><h4>📌能量透支评估</h4>
+<p>透支来自你没有建立好工作和生活的分界线。</p></div>
+<div class="report-section"><h4>📌成长停滞诊断</h4>
+<p>不是平台不行，是你没有留出给自己充电的空间。</p></div>
+<div class="report-section"><h4>📌活法失衡指数</h4>
+<p>高失衡，需要重建生活秩序。</p></div>
+<div class="report-section"><h4>📌问题来源分析</h4>
+<p>问题不在这份工作，在你分配精力的方式。</p></div>
+<div class="report-section"><h4>📌未来6个月推演</h4>
+<p>学会划边界之后，同样的工作，你的感受会完全不一样。</p></div>
+<div class="report-section"><h4>📌未来30天调整路线图</h4>
+<p>固定下班停止工作消息、恢复爱好、减少无意义自我内耗，练习拒绝。</p></div>
+        `
+    },
+    {
+        tag:"短期倦怠｜阶段性低谷",
+        title:"你的核心结论：先休息，不用做大变动",
+        content:`
+<div class="report-section"><h4>📌人生状态总览</h4>
+<p>只是短期压力堆积带来的倦怠，不是长期不匹配。</p></div>
+<div class="report-section"><h4>📌工作匹配度分析</h4>
+<p>岗位大体适配，只是最近负荷超标。</p></div>
+<div class="report-section"><h4>📌能量透支评估</h4>
+<p>暂时性透支，休息后可以恢复。</p></div>
+<div class="report-section"><h4>📌成长停滞诊断</h4>
+<p>暂时进入平台期，不是永久停滞。</p></div>
+<div class="report-section"><h4>📌活法失衡指数</h4>
+<p>轻度失衡，短期调整即可回稳。</p></div>
+<div class="report-section"><h4>📌问题来源分析</h4>
+<p>阶段性忙、压力集中爆发。</p></div>
+<div class="report-section"><h4>📌未来6个月推演</h4>
+<p>压力周期过去之后，状态自然回升。</p></div>
+<div class="report-section"><h4>📌未来30天调整路线图</h4>
+<p>优先补睡眠、减少额外计划，给自己留白，不要在情绪低谷做重大决定。</p></div>
+        `
+    },
+    {
+        tag:"成长停滞｜平稳但无增量",
+        title:"你的核心结论：原地可以待，但要主动找增量",
+        content:`
+<div class="report-section"><h4>📌人生状态总览</h4>
+<p>工作稳定、不累，但慢慢失去新鲜感，看不到上升空间。</p></div>
+<div class="report-section"><h4>📌工作匹配度分析</h4>
+<p>舒适度合格，成长维度短板明显。</p></div>
+<div class="report-section"><h4>📌能量透支评估</h4>
+<p>消耗不大，但容易无聊、空虚。</p></div>
+<div class="report-section"><h4>📌成长停滞诊断</h4>
+<p>平台没有新挑战，需要自己找增量。</p></div>
+<div class="report-section"><h4>📌活法失衡指数</h4>
+<p>中等失衡，缺少目标感。</p></div>
+<div class="report-section"><h4>📌问题来源分析</h4>
+<p>环境稳定，但没有持续成长的土壤。</p></div>
+<div class="report-section"><h4>📌未来6个月推演</h4>
+<p>不主动突破，会越来越麻木；主动增加副业/技能学习，状态会变好。</p></div>
+<div class="report-section"><h4>📌未来30天调整路线图</h4>
+<p>定一个小技能目标，每周固定时间学习，给自己增加第二曲线。</p></div>
+        `
+    },
+    {
+        tag:"全面内耗｜双线透支紧急止损",
+        title:"你的核心结论：先止损，再谈选择",
+        content:`
+<div class="report-section"><h4>📌人生状态总览</h4>
+<p>工作、生活双线透支，已经快要扛不住。</p></div>
+<div class="report-section"><h4>📌工作匹配度分析</h4>
+<p>匹配度很差，持续吞噬你的状态。</p></div>
+<div class="report-section"><h4>📌能量透支评估</h4>
+<p>重度透支，再硬扛会影响身心健康。</p></div>
+<div class="report-section"><h4>📌成长停滞诊断</h4>
+<p>完全停滞，只剩消耗。</p></div>
+<div class="report-section"><h4>📌活法失衡指数</h4>
+<p>严重失衡。</p></div>
+<div class="report-section"><h4>📌问题来源分析</h4>
+<p>外部环境+内在节奏双重崩盘。</p></div>
+<div class="report-section"><h4>📌未来6个月推演</h4>
+<p>继续硬扛，情绪、健康风险持续上升。</p></div>
+<div class="report-section"><h4>📌未来30天调整路线图</h4>
+<p>优先降低负荷，减少额外责任，保护自己，同时悄悄规划退路。</p></div>
+        `
+    },
+    {
+        tag:"状态健康｜节奏适配稳住即可",
+        title:"你的核心结论：当下节奏很适合你，稳住",
+        content:`
+<div class="report-section"><h4>📌人生状态总览</h4>
+<p>你现在的工作和生活节奏相对平衡，没有严重内耗。</p></div>
+<div class="report-section"><h4>📌工作匹配度分析</h4>
+<p>岗位适配，回报、成长、压力在你接受范围。</p></div>
+<div class="report-section"><h4>📌能量透支评估</h4>
+<p>能量收支大体平衡，可以自主充电。</p></div>
+<div class="report-section"><h4>📌成长停滞诊断</h4>
+<p>有持续成长空间，节奏舒服。</p></div>
+<div class="report-section"><h4>📌活法失衡指数</h4>
+<p>轻度平衡，只需要维持。</p></div>
+<div class="report-section"><h4>📌问题来源分析</h4>
+<p>偶尔疲惫是正常波动，不是结构性问题。</p></div>
+<div class="report-section"><h4>📌未来6个月推演</h4>
+<p>保持当前节奏，稳步积累。</p></div>
+<div class="report-section"><h4>📌未来30天调整路线图</h4>
+<p>维持现有边界，定期复盘，保留自己的爱好和休息时间。</p></div>
+        `
+    }
+];
+
+let currentQ = 0;
+let score = [0,0,0,0];
+
+// 切换页面
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+    document.getElementById(id).classList.add('active')
+}
+function startTest(){
+    currentQ=0;
+    score=[0,0,0,0];
+    renderQ();
+    showPage('page-question');
+}
+function renderQ(){
+    const q = questions[currentQ];
+    document.getElementById('q-index').innerText = currentQ+1;
+    let html = `<h3 class="question-title">${q.title}</h3>`;
+    q.options.forEach((opt,i)=>{
+        html += `<div class="option-item" onclick="selectOpt(${i})">${opt.txt}</div>`
+    })
+    document.getElementById('q-wrap').innerHTML = html;
+}
+function selectOpt(i){
+    const opt = questions[currentQ].options[i];
+    score[0] += opt.score[0];
+    score[1] += opt.score[1];
+    score[2] += opt.score[2];
+    score[3] += opt.score[3];
+    currentQ++;
+    if(currentQ >= questions.length){
+        calcReport();
+        return;
+    }
+    renderQ();
+}
+function calcReport(){
+    let w=score[0],g=score[1],e=score[2],l=score[3];
+    let resIdx;
+    if(w<-3 && e<-3) resIdx = 4; //全面内耗
+    else if(w<-2 && g<0) resIdx=0; //换工作
+    else if(l<-3 && w>=-1) resIdx=1; //换活法
+    else if(e>=-2 && g<=-1) resIdx=3; //成长停滞
+    else if(e>=-2 && w>=-1 && l>=-1) resIdx=5; //健康
+    else resIdx=2; //短期倦怠
+
+    const rep = reports[resIdx];
+    document.getElementById('r-title').innerText = rep.tag;
+    document.getElementById('r-content').innerHTML = rep.content;
+    showPage('page-report');
+}
+function restartTest(){
+    showPage('page-home');
+}
+</script>
+</body>
+</html>
